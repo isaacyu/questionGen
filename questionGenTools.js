@@ -1,6 +1,7 @@
-// v1: from c9.io
-// link to make above link from github
-// https://rawgit.com/
+// v2: from c9.io on 21 mar 2017
+// v1: from c9.io before 21 mar 2017
+
+var q = {}; // an object that can be access in making question
 
 var random = {
 	alpha: function(){
@@ -34,25 +35,44 @@ var questionGenTools ={
         remainStr = addedFunctStr;
 
         while(leftMostInst !== ""){
-          
-          noFunctStrArr.push(leftMostInst);
-          
-          cutIndex = isaac.mySearch(remainStr,leftMostInst)+leftMostInst.length;
+        	
+        	var isEngChar = function(str){
+        		var english = /[a-zA-Z]/;
+        		return english.test(str);
+        	}
+        	
+        	// position of last char of string inside {}
+        	cutIndex = isaac.mySearch(remainStr,leftMostInst)+leftMostInst.length;
+        	
+        	// position of first char of string inside {}
+        	var beginIndex = isaac.mySearch(remainStr,leftMostInst);
       
-          //console.log("cutIndex",cutIndex);
-          
-          remainStr = remainStr.substring(cutIndex);
+        	console.log("cutIndex",cutIndex);
+        	
+        	console.log("detected instruction",leftMostInst);//,"remainStr",remainStr);
+ 
+			var charBeforeIt = remainStr.substr(beginIndex-1,1);       	
+        	
+        	console.log("charBeforeIt", charBeforeIt);
+        	
+        	//if (!isEngChar(charBeforeIt)){
+        	
+        		noFunctStrArr.push(leftMostInst);
         
-          //console.log("leftMostInst",leftMostInst,"remainStr",remainStr);
+
+        		
+        	//}
+        	
+      		remainStr = remainStr.substring(cutIndex);
           
-          leftMostInst = isaac.extract(remainStr,"{");
+      		leftMostInst = isaac.extract(remainStr,"{");
         
         }
       
         console.log(noFunctStrArr);
         
         return noFunctStrArr;
-    
+   
 	},
 	
 	
@@ -127,6 +147,7 @@ var questionGenTools ={
 		
 		var tmp="";
 		
+		console.log("q");
 		
 		
 		for (var i = 0; i<instArr.length;i++){
@@ -150,7 +171,9 @@ var questionGenTools ={
 			
 			if(instType==="function"){
 				
-				var thisVal = thisInst();
+				
+				
+				var thisVal = thisInst(q);
               
                 //console.log("thisInst as function", thisInst);
 				
